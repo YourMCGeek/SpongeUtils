@@ -23,9 +23,9 @@ public final class Configuration {
 
     // Formatting
 
-    public String utilHeader;
+    public String utilPadding;
+    public String utilPrefix;
     public String utilBody;
-    public String utilFooter;
 
     // Links
 
@@ -55,9 +55,9 @@ public final class Configuration {
 
             // Formatting
 
-            utilHeader = config.getNode("Message", "Header").getString();
+            utilPadding = config.getNode("Message", "Padding").getString();
+            utilPrefix = config.getNode("Message", "Prefix").getString();
             utilBody = config.getNode("Message", "Body").getString();
-            utilFooter = config.getNode("Message", "Footer").getString();
 
             // Links
 
@@ -88,9 +88,10 @@ public final class Configuration {
 
                 // Formatting Configuration
 
-                config.getNode("Message", "Header").setValue("&8==============[&5ShadowNode&8]===============");
+                config.getNode("Message", "Padding").setValue("&7=");
+                config.getNode("Message", "Prefix").setValue("&8[&5ShadowNode&8]");
                 config.getNode("Message", "Body").setValue("&5&l                               Click this link");
-                config.getNode("Message", "Footer").setValue("&8=========================================");
+
 
                 // Links Configuration
 

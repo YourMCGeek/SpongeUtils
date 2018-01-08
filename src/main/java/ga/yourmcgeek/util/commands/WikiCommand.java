@@ -8,31 +8,29 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.service.pagination.PaginationList;
 import org.spongepowered.api.text.Text;
 
 
 
 public class WikiCommand implements CommandExecutor {
-
-    private final Util plugin;
-
-    public WikiCommand(Util plugin) {
-        this.plugin = plugin;
-    }
+    public WikiCommand() {}
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-
-        if (!plugin.getConfig().wikiEnabled) {
-            return CommandResult.empty();
+        try {
+            if (!Util.getInstance().getConfig().wikiEnabled | Util.getInstance().getConfig().wikiEnabled == false) {
+                return CommandResult.empty();
+            }
+        }
+        catch (NullPointerException e){
+            Util.getInstance().getLogger().error("Error when running this command. Report NPE to the developer.");
         }
 
-        else {
-            src.sendMessage(Text.of(plugin.getConfig().utilHeader));
-            src.sendMessage(Text.of(plugin.getConfig().utilBody));
-            src.sendMessage(Text.of(plugin.getConfig().linksWiki));
-            src.sendMessage(Text.of(plugin.getConfig().utilFooter));
-        }
+        PaginationList.Builder builder = PaginationList.builder();
+        builder.title(Text.of(Util.getInstance().getConfig().utilPrefix))
+                .contents(Text.of(Util.getInstance().getConfig().utilBody), Text.of(Util.getInstance().getConfig().linksWiki))
+                .padding(Text.of(Util.getInstance().getConfig().utilPadding));
 
         return CommandResult.success();
     }
@@ -43,8 +41,6 @@ public class WikiCommand implements CommandExecutor {
                 .permission("utils.wiki")
                 .executor(this)
                 .build();
-
-        Sponge.getCommandManager().register(this, wiki, "wiki");
-
+        Sponge.getCommandManager().register(Util.getInstance(), wiki, "wiki");
     }
 }

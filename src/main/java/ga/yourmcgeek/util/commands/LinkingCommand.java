@@ -8,34 +8,25 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.service.pagination.PaginationList;
 import org.spongepowered.api.text.Text;
 
 
 public class LinkingCommand implements CommandExecutor {
-
-
-    private final Util plugin;
-
-    public LinkingCommand(Util plugin) {
-        this.plugin = plugin;
-    }
-
+    public LinkingCommand() {}
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-
-        if (!plugin.getConfig().linkingEnabled){
+        if (!Util.getInstance().getConfig().linkingEnabled){
             return CommandResult.empty();
         }
-
         else {
-            src.sendMessage(Text.of(plugin.getConfig().utilHeader));
-            src.sendMessage(Text.of(plugin.getConfig().utilBody));
-            src.sendMessage(Text.of(plugin.getConfig().linksLinking));
-            src.sendMessage(Text.of(plugin.getConfig().utilFooter));
+            PaginationList.Builder builder = PaginationList.builder();
 
+            builder.title(Text.of(Util.getInstance().getConfig().utilPrefix))
+                    .contents(Text.of(Util.getInstance().getConfig().utilBody), Text.of(Util.getInstance().getConfig().linksLinking))
+                    .padding(Text.of(Util.getInstance().getConfig().utilPadding));
         }
-
         return CommandResult.success();
     }
 
@@ -45,8 +36,6 @@ public class LinkingCommand implements CommandExecutor {
                 .permission("utils.link")
                 .executor(this)
                 .build();
-
-        Sponge.getCommandManager().register(this, link, "linking", "accounts", "account", "link");
-
+        Sponge.getCommandManager().register(Util.getInstance(), link, "linking", "accounts", "account", "link");
     }
 }

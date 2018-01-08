@@ -8,31 +8,22 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.service.pagination.PaginationList;
 import org.spongepowered.api.text.Text;
 
 public class ForumCommand implements CommandExecutor {
-
-    private final Util plugin;
-
-    public ForumCommand(Util plugin) {
-        this.plugin = plugin;
-    }
+    public ForumCommand() {}
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-
-        if (!plugin.getConfig().forumEnabled) {
+        if (!Util.getInstance().getConfig().forumEnabled) {
             return CommandResult.empty();
         }
-
         else {
-
-            src.sendMessage(Text.of(plugin.getConfig().utilHeader));
-            src.sendMessage(Text.of(plugin.getConfig().utilBody));
-            src.sendMessage(Text.of(plugin.getConfig().linksForum));
-            src.sendMessage(Text.of(plugin.getConfig().utilFooter));
-
-
+            PaginationList.Builder builder = PaginationList.builder();
+            builder.title(Text.of(Util.getInstance().getConfig().utilPrefix))
+                    .contents(Text.of(Util.getInstance().getConfig().utilBody), Text.of(Util.getInstance().getConfig().linksForum))
+                    .padding(Text.of(Util.getInstance().getConfig().utilPadding));
             return CommandResult.success();
         }
     }
@@ -43,7 +34,6 @@ public class ForumCommand implements CommandExecutor {
                 .permission("utils.forum")
                 .executor(this)
                 .build();
-        Sponge.getCommandManager().register(this, forum, "forums", "forum");
-
+        Sponge.getCommandManager().register(Util.getInstance(), forum, "forums", "forum");
     }
 }
