@@ -36,6 +36,7 @@ public class Util {
 
     public Configuration config;
 
+    public Util plugin;
 
 
 
