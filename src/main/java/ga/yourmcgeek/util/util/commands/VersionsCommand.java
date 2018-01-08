@@ -12,14 +12,14 @@ import org.spongepowered.api.text.format.TextStyles;
 public class VersionsCommand implements CommandExecutor {
 
 
-    Text header = Text.of(TextColors.DARK_GRAY, "==============[", TextColors.DARK_PURPLE,
+    public static Text header = Text.of(TextColors.DARK_GRAY, "==============[", TextColors.DARK_PURPLE,
             "ShadowNode", TextColors.DARK_GRAY, "]===============");
-    Text body = Text.of(TextColors.DARK_PURPLE, TextStyles.BOLD, "             Click this link");
+    public static Text body = Text.of(TextColors.DARK_PURPLE, TextStyles.BOLD, "             Click this link");
 
     Text servers = Text.of(TextColors.DARK_PURPLE, "  >>> ", TextColors.GREEN, "https://shadownode.ca/servers/",
             TextColors.DARK_PURPLE, "<<<");
 
-    Text footer = Text.of(TextColors.DARK_GRAY, "=========================================");
+    public static Text footer = Text.of(TextColors.DARK_GRAY, "=========================================");
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {

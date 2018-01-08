@@ -10,21 +10,19 @@ import org.spongepowered.api.text.format.TextColors;
 
 import static ga.yourmcgeek.util.util.commands.VersionsCommand.*;
 
-public class WikiCommand implements CommandExecutor {
+public class ForumCommand implements CommandExecutor {
 
-
-    Text wiki = Text.of(TextColors.DARK_PURPLE, "  >>>>> ", TextColors.GREEN, "https://shadownode.ca/wiki/",
-            TextColors.DARK_PURPLE, "<<<<<    ");
-
+    Text forum = Text.of(TextColors.DARK_PURPLE, "   >>>>>>>> ", TextColors.GREEN, "https://shadownode.ca",
+            TextColors.DARK_PURPLE, "<<<<<<<    ");
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+
         src.sendMessage(header);
         src.sendMessage(body);
-        src.sendMessage(wiki);
+        src.sendMessage(forum);
         src.sendMessage(footer);
 
         return CommandResult.success();
     }
-
 }

@@ -1,20 +1,17 @@
 package ga.yourmcgeek.util.util;
 
 import com.google.inject.Inject;
+import ga.yourmcgeek.util.util.commands.ForumCommand;
+import ga.yourmcgeek.util.util.commands.LinkingCommand;
 import ga.yourmcgeek.util.util.commands.VersionsCommand;
 import ga.yourmcgeek.util.util.commands.WikiCommand;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.spec.CommandSpec;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.filter.Getter;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
-import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.text.format.TextStyles;
 
 @Plugin(
         id = "util",
@@ -35,14 +32,23 @@ public class Util {
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
 
-        this.logger.info("Generating Utils");
+        int x = 0;
+
+        this.logger.info("Generating Utils...");
 
         Sponge.getCommandManager().register(this, wiki, "wiki");
+        x++;
         this.logger.info("Wiki Util initialized.");
         Sponge.getCommandManager().register(this, versions, "version", "servers", "versions", "packs", "pack");
-        this.logger.info("Verions Util initialized");
-
-        this.logger.info("Util Generation Completed.");
+        x++;
+        this.logger.info("Versions Util initialized.");
+        Sponge.getCommandManager().register(this, link, "linking", "accounts", "account", "link");
+        x++;
+        this.logger.info("Linking Util initialized.");
+        Sponge.getCommandManager().register(this, forum, "forums", "forum");
+        x++;
+        this.logger.info("Forum Util initialized.");
+        this.logger.info("Util Generation Completed. " + x + " utils generated.");
 
 
     }
@@ -58,4 +64,17 @@ public class Util {
             .permission("utils.versions")
             .executor(new VersionsCommand())
             .build();
+
+    CommandSpec link = CommandSpec.builder()
+            .description(Text.of("Provides direct url to forum post on linking accounts"))
+            .permission("utils.link")
+            .executor(new LinkingCommand())
+            .build();
+
+    CommandSpec forum = CommandSpec.builder()
+            .description(Text.of("Provides link to forums"))
+            .permission("utils.forum")
+            .executor(new ForumCommand())
+            .build();
+
 }

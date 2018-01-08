@@ -10,11 +10,11 @@ import org.spongepowered.api.text.format.TextColors;
 
 import static ga.yourmcgeek.util.util.commands.VersionsCommand.*;
 
-public class WikiCommand implements CommandExecutor {
+public class LinkingCommand implements CommandExecutor {
 
 
-    Text wiki = Text.of(TextColors.DARK_PURPLE, "  >>>>> ", TextColors.GREEN, "https://shadownode.ca/wiki/",
-            TextColors.DARK_PURPLE, "<<<<<    ");
+    Text wiki = Text.of(TextColors.DARK_PURPLE, "   >>>>>>> ", TextColors.GREEN, "https://goo.gl/CtrQ6o",
+            TextColors.DARK_PURPLE, "<<<<<<<    ");
 
 
     @Override
@@ -26,5 +26,4 @@ public class WikiCommand implements CommandExecutor {
 
         return CommandResult.success();
     }
-
 }
