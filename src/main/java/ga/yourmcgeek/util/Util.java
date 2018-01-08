@@ -1,17 +1,21 @@
-package ga.yourmcgeek.util.util;
+package ga.yourmcgeek.util;
 
 import com.google.inject.Inject;
-import ga.yourmcgeek.util.util.commands.ForumCommand;
-import ga.yourmcgeek.util.util.commands.LinkingCommand;
-import ga.yourmcgeek.util.util.commands.VersionsCommand;
-import ga.yourmcgeek.util.util.commands.WikiCommand;
+import ga.yourmcgeek.util.commands.ForumCommand;
+import ga.yourmcgeek.util.commands.LinkingCommand;
+import ga.yourmcgeek.util.commands.VersionsCommand;
+import ga.yourmcgeek.util.commands.WikiCommand;
+import ga.yourmcgeek.util.config.Configuration;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
+
+import java.io.File;
 
 @Plugin(
         id = "util",
@@ -25,6 +29,12 @@ public class Util {
     // as long as @Inject is used.
     @Inject
     private Logger logger;
+
+    @Inject
+    @DefaultConfig(sharedRoot = true)
+    public File defaultConfig;
+
+    public Configuration config;
 
 
 
@@ -76,5 +86,13 @@ public class Util {
             .permission("utils.forum")
             .executor(new ForumCommand())
             .build();
+
+    public Logger getLogger() {
+        return logger;
+    }
+
+    public Configuration getConfig() {
+        return config;
+    }
 
 }
