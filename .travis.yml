@@ -1,5 +1,7 @@
+install: true
 language: java
 jdk:
-  - openjdk8
   - oraclejdk8
-script: gradle build
+script: 
+  -gradle assemble
+  -gradle build
