@@ -18,14 +18,14 @@ public class WikiCommand implements CommandExecutor {
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-        try {
-            if (!Util.getInstance().getConfig().wikiEnabled | Util.getInstance().getConfig().wikiEnabled == false) {
-                return CommandResult.empty();
-            }
+        if (!Util.getInstance().getConfig().wikiEnabled) {
+            Util.getInstance().getLogger().warn("Command not invoked");
+            return CommandResult.empty();
         }
-        catch (NullPointerException e){
+        /*catch (NullPointerException e){
             Util.getInstance().getLogger().error("Error when running this command. Report NPE to the developer.");
-        }
+            e.toString();
+        }*/
 
         PaginationList.Builder builder = PaginationList.builder();
         builder.title(Text.of(Util.getInstance().getConfig().utilPrefix))

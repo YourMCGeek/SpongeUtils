@@ -41,10 +41,9 @@ public final class Configuration {
 
     public void loadConfig() {
         try {
-            loader = HoconConfigurationLoader.builder().setFile(plugin.defaultConfig).build();
+            loader = HoconConfigurationLoader.builder().setFile(Util.getInstance().defaultConfig).build();
             saveDefaultConfig();
             config = loader.load();
-
 
             // Commands
 
@@ -66,17 +65,15 @@ public final class Configuration {
             linksVersions = config.getNode("Links", "Versions").getString();
             linksWiki = config.getNode("Links", "Wiki").getString();
 
-
-
         } catch (IOException e) {
-            plugin.getLogger().error("Could not create a default config. Please report this.");
+            Util.getInstance().getLogger().error("Could not create a default config. Please report this.");
         }
     }
 
     public void saveDefaultConfig() {
-        if (!plugin.defaultConfig.exists()) {
+        if (!Util.getInstance().defaultConfig.exists()) {
             try {
-                plugin.defaultConfig.createNewFile();
+                Util.getInstance().defaultConfig.createNewFile();
                 config = loader.load();
 
                 // Configuration for Commands
@@ -92,7 +89,6 @@ public final class Configuration {
                 config.getNode("Message", "Prefix").setValue("&8[&5ShadowNode&8]");
                 config.getNode("Message", "Body").setValue("&5&l                               Click this link");
 
-
                 // Links Configuration
 
                 config.getNode("Links", "Forum").setValue("&6                         https://shadownode.ca/");
@@ -100,15 +96,11 @@ public final class Configuration {
                 config.getNode("Links", "Versions").setValue("&6                  https://shadownode.ca/servers/");
                 config.getNode("Links", "Wiki").setValue("&6                   https://shadownode.ca/wiki/");
 
-
                 loader.save(config);
 
-
             } catch (IOException e) {
-                plugin.getLogger().error("Could not create a default config. Please report this.");
+                Util.getInstance().getLogger().error("Could not create a default config. Please report this.");
             }
         }
     }
-
-
 }

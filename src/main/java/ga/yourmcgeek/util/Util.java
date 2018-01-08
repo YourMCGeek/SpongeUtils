@@ -47,6 +47,8 @@ public class Util {
 
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
+        config = new Configuration(this);
+
         int commandsInitialized = 0;
 
         new WikiCommand().register();

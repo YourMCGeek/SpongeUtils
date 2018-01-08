@@ -1,12 +1,24 @@
 plugins {
     id 'org.spongepowered.plugin' version '0.8.1'
+    id 'com.qixalite.spongestart2' version '3.0.1'
+
+}
+
+spongestart{
+    minecraft '1.12.2'
+    spongeVanilla '1.12.2-7.1.0-BETA-5'
+
 }
 
 group = pluginGroup
 version = pluginVersion
 
 dependencies {
-    compile 'org.spongepowered:spongeapi:6.0.0'
+    compile 'org.spongepowered:spongeapi:7.0.0'
+
+    runtime('org.spongepowered:spongevanilla:1.12.2-7.1.0-BETA-5') {
+        exclude group: 'org.spongepowered', module: 'testplugins'
+    }
 }
 
 sponge.plugin.id = pluginId
