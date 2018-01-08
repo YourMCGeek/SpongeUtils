@@ -1,16 +1,22 @@
 package ga.yourmcgeek.util.commands;
 
 import ga.yourmcgeek.util.Util;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.text.Text;
 
 public class ForumCommand implements CommandExecutor {
 
     private final Util plugin;
+
+    public ForumCommand(Util plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
@@ -29,5 +35,15 @@ public class ForumCommand implements CommandExecutor {
 
             return CommandResult.success();
         }
+    }
+
+    public void register(){
+        CommandSpec forum = CommandSpec.builder()
+                .description(Text.of("Provides link to forums"))
+                .permission("utils.forum")
+                .executor(this)
+                .build();
+        Sponge.getCommandManager().register(this, forum, "forums", "forum");
+
     }
 }

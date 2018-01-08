@@ -36,7 +36,6 @@ public class Util {
 
     public Configuration config;
 
-    public Util plugin;
 
 
 
@@ -47,46 +46,35 @@ public class Util {
 
         this.logger.info("Generating Utils...");
 
-        Sponge.getCommandManager().register(this, wiki, "wiki");
+        new WikiCommand(this).register();
         x++;
         this.logger.info("Wiki Util initialized.");
-        Sponge.getCommandManager().register(this, versions, "version", "servers", "versions", "packs", "pack");
+
+
+        new VersionsCommand(this).register();
         x++;
         this.logger.info("Versions Util initialized.");
-        Sponge.getCommandManager().register(this, link, "linking", "accounts", "account", "link");
+
+
+        new LinkingCommand(this).register();
         x++;
         this.logger.info("Linking Util initialized.");
-        Sponge.getCommandManager().register(this, forum, "forums", "forum");
+
+
+        new ForumCommand(this).register();
         x++;
         this.logger.info("Forum Util initialized.");
+
         this.logger.info("Util Generation Completed. " + x + " utils generated.");
 
 
     }
 
-    CommandSpec wiki = CommandSpec.builder()
-            .description(Text.of("Provides a link to the wiki"))
-            .permission("utils.wiki")
-            .executor(new WikiCommand())
-            .build();
 
-    CommandSpec versions = CommandSpec.builder()
-            .description(Text.of("Provides pack versions"))
-            .permission("utils.versions")
-            .executor(new VersionsCommand())
-            .build();
 
-    CommandSpec link = CommandSpec.builder()
-            .description(Text.of("Provides direct url to forum post on linking accounts"))
-            .permission("utils.link")
-            .executor(new LinkingCommand())
-            .build();
 
-    CommandSpec forum = CommandSpec.builder()
-            .description(Text.of("Provides link to forums"))
-            .permission("utils.forum")
-            .executor(new ForumCommand())
-            .build();
+
+
 
     public Logger getLogger() {
         return logger;
