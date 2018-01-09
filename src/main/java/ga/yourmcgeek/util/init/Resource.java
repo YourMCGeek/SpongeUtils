@@ -2,7 +2,7 @@ package ga.yourmcgeek.util.init;
 
 public class Resource {
 
-    public final static String NAME = "Utils";
+    public final static String NAME = "ShadowNode Utilities";
     public final static String ID = "util";
     public final static String VERSION = "1";
     public final static String DESCRIPTION = "Simple plugin to help staff out";
