@@ -1,6 +1,7 @@
 package ga.yourmcgeek.util.commands;
 
 import ga.yourmcgeek.util.Util;
+import ga.yourmcgeek.util.util.Utils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -13,29 +14,26 @@ import org.spongepowered.api.text.Text;
 
 
 public class LinkingCommand implements CommandExecutor {
-    public LinkingCommand() {}
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-        if (!Util.getInstance().getConfig().linkingEnabled){
-            return CommandResult.empty();
-        }
-        else {
-            PaginationList.Builder builder = PaginationList.builder();
-
-            builder.title(Text.of(Util.getInstance().getConfig().utilPrefix))
-                    .contents(Text.of(Util.getInstance().getConfig().utilBody), Text.of(Util.getInstance().getConfig().linksLinking))
-                    .padding(Text.of(Util.getInstance().getConfig().utilPadding));
-        }
+        PaginationList.builder()
+                .title(Utils.toText(Util.getInstance().getConfig().message.prefix))
+                .contents(Utils.toText(Util.getInstance().getConfig().message.body), Utils.toText(Util.getInstance().getConfig().linking.link))
+                .padding(Utils.toText(Util.getInstance().getConfig().message.padding))
+                .sendTo(src);
         return CommandResult.success();
     }
 
+
     public void register() {
-        CommandSpec link = CommandSpec.builder()
-                .description(Text.of("Provides direct url to forum post on linking accounts"))
-                .permission("utils.link")
-                .executor(this)
-                .build();
-        Sponge.getCommandManager().register(Util.getInstance(), link, "linking", "accounts", "account", "link");
+        if (Util.getInstance().getConfig().linking.enabled) {
+            CommandSpec link = CommandSpec.builder()
+                    .description(Text.of("Provides direct url to forum post on linking accounts"))
+                    .permission("utils.link")
+                    .executor(this)
+                    .build();
+            Sponge.getCommandManager().register(Util.getInstance(), link, "linking", "accounts", "account", "link");
+        }
     }
 }

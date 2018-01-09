@@ -5,49 +5,49 @@ import ga.yourmcgeek.util.commands.ForumCommand;
 import ga.yourmcgeek.util.commands.LinkingCommand;
 import ga.yourmcgeek.util.commands.VersionsCommand;
 import ga.yourmcgeek.util.commands.WikiCommand;
-import ga.yourmcgeek.util.config.Configuration;
+import ga.yourmcgeek.util.config.Config;
 import ga.yourmcgeek.util.init.Resource;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
-import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.event.game.GameReloadEvent;
+import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.plugin.PluginContainer;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @Plugin(id = Resource.ID, name = Resource.NAME,
         description = Resource.DESCRIPTION, version = Resource.VERSION)
 public class Util {
-    private static Util instance;
-    private static PluginContainer plugin;
 
-    // Sponge provides a default Logger instance to all plugins
-    // as long as @Inject is used.
+    private static Util instance;
+
     @Inject
     private Logger logger;
 
     @Inject
     @DefaultConfig(sharedRoot = true)
-    public File defaultConfig;
+    public Path defaultConfig;
 
-    public Configuration config;
+    @Inject @DefaultConfig(sharedRoot = true)
+    ConfigurationLoader<CommentedConfigurationNode> loader;
 
-    public static Util getInstance() {
-        return instance;
-    }
+    public Config config;
 
     @Listener
-    public void onPreInitializationEvent(GamePreInitializationEvent event) {
-        plugin = Sponge.getPluginManager().getPlugin(Resource.ID).get();
+    public void onInitialization(GameInitializationEvent event) throws IOException, ObjectMappingException {
         instance = this;
-    }
+        if (!Files.exists(defaultConfig)) {
+            Sponge.getAssetManager().getAsset(this, "default.conf").get().copyToFile(defaultConfig);
+        }
 
-    @Listener
-    public void onServerStart(GameStartedServerEvent event) {
-        config = new Configuration(this);
+        config = loader.load().getValue(Config.type);
 
         int commandsInitialized = 0;
 
@@ -62,11 +62,24 @@ public class Util {
         this.logger.info("Util Generation Completed. " + commandsInitialized + " utils generated.");
     }
 
+    @Listener
+    public void onReload(GameReloadEvent event) throws IOException, ObjectMappingException {
+        if (!Files.exists(defaultConfig)) {
+            Sponge.getAssetManager().getAsset(this, "default.conf").get().copyToFile(defaultConfig);
+        }
+        config = loader.load().getValue(Config.type);
+    }
+
     public Logger getLogger() {
         return logger;
     }
-    public Configuration getConfig() {
+
+    public Config getConfig() {
         return config;
+    }
+
+    public static Util getInstance() {
+        return instance;
     }
 
 }

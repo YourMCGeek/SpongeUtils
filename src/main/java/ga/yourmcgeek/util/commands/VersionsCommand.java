@@ -1,6 +1,7 @@
 package ga.yourmcgeek.util.commands;
 
 import ga.yourmcgeek.util.Util;
+import ga.yourmcgeek.util.util.Utils;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -13,27 +14,24 @@ import org.spongepowered.api.text.Text;
 
 
 public class VersionsCommand implements CommandExecutor {
-    public VersionsCommand() {}
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-        if (!Util.getInstance().getConfig().versionsEnabled) {
-            return CommandResult.empty();
-        }
-        else {
-            PaginationList.Builder builder = PaginationList.builder();
-            builder.title(Text.of(Util.getInstance().getConfig().utilPrefix))
-                    .contents(Text.of(Util.getInstance().getConfig().utilBody), Text.of(Util.getInstance().getConfig().linksVersions))
-                    .padding(Text.of(Util.getInstance().getConfig().utilPadding));
-        }
+        PaginationList.builder()
+                .title(Utils.toText(Util.getInstance().getConfig().message.prefix))
+                .contents(Utils.toText(Util.getInstance().getConfig().message.body), Utils.toText(Util.getInstance().getConfig().versions.link))
+                .padding(Utils.toText(Util.getInstance().getConfig().message.padding))
+                .sendTo(src);
         return CommandResult.success();
     }
     public void register() {
-        CommandSpec versions = CommandSpec.builder()
-                .description(Text.of("Provides pack versions"))
-                .permission("utils.versions")
-                .executor(this)
-                .build();
-        Sponge.getCommandManager().register(Util.getInstance(), versions, "version", "servers", "versions", "packs", "pack");
+        if (Util.getInstance().getConfig().versions.enabled) {
+            CommandSpec versions = CommandSpec.builder()
+                    .description(Text.of("Provides pack versions"))
+                    .permission("utils.versions")
+                    .executor(this)
+                    .build();
+            Sponge.getCommandManager().register(Util.getInstance(), versions, "version", "servers", "versions", "packs", "pack");
+        }
     }
 }
